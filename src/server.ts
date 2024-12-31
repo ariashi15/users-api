@@ -34,3 +34,10 @@ app.get("api/users", async (req: express.Request, res: express.Response) => {
         res.status(500).json({ error: "Failed to fetch users" });
     }
 });
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+export default app;
