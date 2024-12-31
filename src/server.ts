@@ -23,7 +23,7 @@ const pool = new Pool ({
     }
 });
 
-app.get("api/users", async (req: express.Request, res: express.Response) => {
+app.get("/api/users", async (req: express.Request, res: express.Response) => {
     try {
         const result = await pool.query<User>(
             "SELECT * FROM users ORDER BY id ASC"
@@ -35,7 +35,7 @@ app.get("api/users", async (req: express.Request, res: express.Response) => {
     }
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
