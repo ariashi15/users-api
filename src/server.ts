@@ -49,6 +49,18 @@ app.get("/api/users/:id", async (req: express.Request, res: express.Response) =>
     }
 });
 
+app.post("/api/users", async (req: express.Request, res: express.Response) => {
+    const { first_name, last_name, email } = req.body;
+    try {
+        const result = await pool.query<User>(
+            "INSERT INTO users (first_name, last_name, email) VALUES ($1, $2, $3)", [first_name, last_name, email] 
+        )
+    } catch (err) {
+        console.error("Query error:", err);
+        res.status(500).json({ error: "Failed to create user" });
+    }
+})
+
 const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
