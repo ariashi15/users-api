@@ -35,6 +35,20 @@ app.get("/api/users", async (req: express.Request, res: express.Response) => {
     }
 });
 
+app.get("/api/users/:id", async (req: express.Request, res: express.Response) => {
+    const { id } = req.params;
+    console.log(`${id}`);
+    try {
+        const result = await pool.query<User>(
+            "SELECT * FROM users WHERE id=$1", [id]
+        );
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error("Query error:", err);
+        res.status(500).json({ error: "Failed to fetch user" });
+    }
+});
+
 const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
