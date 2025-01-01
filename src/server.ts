@@ -23,6 +23,11 @@ const pool = new Pool ({
     }
 });
 
+app.use((req, res, next) => {
+    console.log(`Received request for path: ${req.path}`);  // This will print every path that hits the server
+    next();
+});
+
 app.get("/api/users", async (req: express.Request, res: express.Response) => {
     try {
         const result = await pool.query<User>(
@@ -35,9 +40,22 @@ app.get("/api/users", async (req: express.Request, res: express.Response) => {
     }
 });
 
-app.get("/api/users/:id", async (req: express.Request, res: express.Response) => {
+app.get("/api/users/profiles", async (req: express.Request, res: express.Response) => {
+    console.log("hi")
+    try {
+        const result = await pool.query<User>(
+            "SELECT users.id, first_name, last_name, email, date_of_birth, bio FROM users LEFT JOIN user_profiles ON users.id = user_profiles.id ORDER BY users.id ASC"
+        );
+        res.json(result.rows);
+    } catch (err) {
+        console.error("Query error:", err);
+        res.status(500).json({ error: "Failed to fetch user profiles" });
+    }
+});
+
+app.get("/api/users/:id(\\d+)", async (req: express.Request, res: express.Response) => {
     const { id } = req.params;
-    console.log(`${id}`);
+    console.log(`hello ${id}`);
     try {
         const result = await pool.query<User>(
             "SELECT * FROM users WHERE id=$1", [id]
