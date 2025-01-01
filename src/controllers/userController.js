@@ -12,8 +12,8 @@ const userController = new (class UserController {
         .select(
           `
           id,
-          firstname,
-          lastname,
+          first_name,
+          last_name,
           email,
           bio,
           major,
@@ -265,7 +265,7 @@ const userController = new (class UserController {
       res.status(400).json({ error: error.message });
     }
   }
-})();
+})
 
 // Add debug logging
 console.log("Available controller methods:", Object.keys(userController));
