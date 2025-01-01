@@ -20,41 +20,14 @@ const userController = new (class UserController {
         }
     }
 
-  async getProfile(req, res) {
+  async getUser(req, res) {
     try {
-      const userId = req.user.id;
-      console.log("Fetching profile for user:", userId);
+      const userId = req.params.id;
 
       const { data, error } = await supabase
         .from("users")
-        .select(
-          `
-          id,
-          first_name,
-          last_name,
-          email,
-          bio,
-          major,
-          graduationyear,
-          profilepicture,
-          user_posts (
-            id,
-            title,
-            content,
-            created_at
-          ),
-          user_courses (
-            courses (
-              id,
-              name,
-              department,
-              professor
-            )
-          )
-        `
-        )
-        .eq("auth_id", userId)
-        .single();
+        .select("*")
+        .eq("id", userId);
 
       if (error && error.code !== "PGRST116") {
         console.error("Supabase error:", error);
@@ -64,29 +37,10 @@ const userController = new (class UserController {
       if (data) {
         return res.json(data);
       }
-
-      const { data: newProfile, error: createError } = await supabase
-        .from("users")
-        .insert({
-          firstname: "New",
-          lastname: "User",
-          email: req.user.email,
-          major: "Undeclared",
-          graduationyear: 2025,
-          auth_id: userId,
-        })
-        .select()
-        .single();
-
-      if (createError) {
-        console.error("Create error:", createError);
-        throw createError;
-      }
-
-      res.json(newProfile);
+      
     } catch (error) {
-      console.error("Error in getProfile:", error);
-      res.status(400).json({ error: error.message });
+        console.error("Error in getUser:", error);
+        res.status(400).json({ error: error.message });
     }
   }
 
