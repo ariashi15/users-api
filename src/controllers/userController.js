@@ -6,7 +6,16 @@ const userController = new (class UserController {
         try {
             const { data, error } = await supabase
                 .from("users")
-                .select("*");
+                .select(`
+                    id,
+                    first_name,
+                    last_name,
+                    email,
+                    user_profiles (
+                        date_of_birth,
+                        bio
+                    )
+                `);
 
             if (error) {
                 throw error;
@@ -26,7 +35,16 @@ const userController = new (class UserController {
 
       const { data, error } = await supabase
         .from("users")
-        .select("*")
+        .select(`
+            id,
+            first_name,
+            last_name,
+            email,
+            user_profiles (
+                date_of_birth,
+                bio
+            )
+        `)
         .eq("id", userId);
 
       if (error && error.code !== "PGRST116") {
