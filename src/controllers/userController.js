@@ -2,6 +2,24 @@ const supabase = require("../config/supabase");
 
 // Create instance before exporting
 const userController = new (class UserController {
+    async getAllUsers(req, res) {
+        try {
+            const { data, error } = await supabase
+                .from("users")
+                .select("*");
+
+            if (error) {
+                throw error;
+            }
+
+            return res.json(data);
+
+        } catch (error) {
+            console.error("Error in getAllUsers:", error);
+            res.status(400).json({ error: error.message });
+        }
+    }
+
   async getProfile(req, res) {
     try {
       const userId = req.user.id;
