@@ -8,8 +8,12 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
+
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 app.get("/api/users", userController.getAllUsers);
 app.get("/api/users/:id", userController.getUser);
 
