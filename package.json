@@ -2,10 +2,10 @@
   "name": "supabase-demo",
   "version": "1.0.0",
   "description": "Simplified Supabase Express demo",
-  "main": "src/server.js",
+  "main": "api/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node api/server.js",
+    "dev": "nodemon api/server.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.x.x",
