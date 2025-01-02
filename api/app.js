@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 });
 app.get("/api/users", userController.getAllUsers);
 app.get("/api/users/:id", userController.getUser);
+app.post("/api/users", userController.createUser);
 
 app.use((err, req, res, next) => {
   console.error("Error:", err);
